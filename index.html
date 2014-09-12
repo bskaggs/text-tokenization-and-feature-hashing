@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Tokenization and Feature Hashing for Document Classification</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Text Tokenization and Feature Hashing for Document Classification">
+  <meta name="author" content="Brad Skaggs">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/color-brewer.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Text Tokenization and Feature Hashing for Document Classification</h1>
+    <h2>Produce fixed-sized features vectors with this one crazy trick!</h2>
+    <p>Brad Skaggs<br/>Developing Data Products</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:#CBE7A5;">
+  <hgroup>
+    <h2>Motivation</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Don&#39;t you just love text classification?  It&#39;s ever so much fun to filter spam out of your inbox.</p>
+
+<p>We often use the <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words model</a> in text classification, where a document is represented as a vector of counts of distinct words.</p>
+
+<p>Most generic classification algorithms rely on a fixed-sized representation of a data item.  To apply them to text classification, this means that we have to remember all the distinct words in our training corpus, and use this to define a fixed-sized vector space whose size depends on the training set.</p>
+
+<p>Now, this seems a bit icky; is there some way we can get a representation that is independent of the training set?  <em>Yes!</em></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:#CBE7A5;">
+  <hgroup>
+    <h2>Tokenizing Text with Regular Expressions</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>First, we must get our bag-of-words representation of our documents.</p>
+
+<p>R makes it easy to tokenize text with regular expressions.  The following code will split this quote by a famous philosopher by word boundaries, and then produce a count of distinct tokens:</p>
+
+<pre><code class="r">table(strsplit(&quot;I yam what I yam and tha&#39;s all what I yam.&quot;, &quot;\\W+&quot;))
+</code></pre>
+
+<pre><code>## 
+##    I  all  and    s  tha what  yam 
+##    3    1    1    1    1    2    3
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:#CBE7A5;">
+  <hgroup>
+    <h2>The Hashing Trick</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Feature hashing is an easy way to get a fixed-sized representation of your documents that is independent of vocabulary size.</p>
+
+<p>Start with an all-zeroes vector in a vector space of a size of your choosing ($n$).  For each word in the document, hash it $k$ different ways into the numbers between 1 and $n$, and $k$ different ways to the bits 0 and 1.  Then, in each position it hashes to, add or subtract one (based on the value of the corresponding bit hash) to the vector.</p>
+
+<p>The resulting vector is independent of the vocabulary size you used, and has some nice theoretical properties as well that are discussed on the <a href="https://en.wikipedia.org/wiki/Feature_hashing">feature hashing Wikipedia article</a>.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:#CBE7A5;">
+  <hgroup>
+    <h2>Demo</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>So you&#39;ve just heard about this crazy trick, and now you are itching to get your hands on some fixed-sized feature vectors for text classification.  Why not try this demo, which does all this for you?  You can play around with several parameters to see their effect.</p>
+
+<ul>
+<li>Try out <a href="https://skaggs.shinyapps.io/text-tokenization-and-feature-hashing/">the Shiny App</a> now!</li>
+<li>The source code is <a href="https://github.com/bskaggs/text-tokenization-and-feature-hashing">available on Github</a>!</li>
+<li>The source code for these slides is also <a href="https://github.com/bskaggs/text-tokenization-and-feature-hashing-slides">available on Github</a>!</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Motivation'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Tokenizing Text with Regular Expressions'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='The Hashing Trick'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Demo'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
