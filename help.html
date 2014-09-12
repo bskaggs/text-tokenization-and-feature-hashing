@@ -1,0 +1,13 @@
+<p>This application illustrates how to <a href="https://en.wikipedia.org/wiki/Tokenization" target="_blank">tokenize</a> a text document with a <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank">regular expression</a> and produce a <a href="https://en.wikipedia.org/wiki/Bag-of-words_model" target="_blank">bag-of-words feature vector</a>, and then use <a href="http://en.wikipedia.org/wiki/Feature_hashing" target="_blank">feature hashing</a> to reduce the dimensionality to a fixed-sized feature vector, even if you don't know the size of the vocabulary in advance.</p>
+
+<div id="instructions" class="collapse">
+  <h4>Tokenization Options</h4>
+  <p>"Splitting regular expression" is passed to R's <code>strsplit</code> function to define what <em>shouldn't</em> be part of a token. The default, <code>\W+</code> represents one or more non-word characters.</p>
+  <p>"Convert tokens to lowercase" indicates if tokens should be converted to lowercase before counting; if you don't select this, the tokens "You" and "you" are treated as distinct.</p>
+  <h4>Hash Options</h4>
+  <p><a href="https://en.wikipedia.org/wiki/MurmurHash" target="_blank">MurmurHash</a> is used to hash each token to multiple locations, as well as a sign bit.  "Number of hashes" represents the number of distinct hashes used, and "Array size" represents the size of the space that is being hashed into (in real applications, this value may be far higher than our maximum of 1000).</p>
+  <h4>Token Counts</h4>
+  <p>On the "Token Counts" tab, the text you provide is tokenized by the regular expression, and the raw count of each token is displayed.</p>
+  <h4>Feature Hashes</h4>
+  <p>On the "Feature Hashes" tab, the results of hashing the token-counts vector is displayed in a sparse representation.</p>
+</div>
